@@ -12,7 +12,9 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ShoppingTester {
 	public static WebDriver driver;
@@ -46,6 +48,7 @@ public class ShoppingTester {
 		driver.manage().window().maximize();
 		driver.get("http://automationpractice.com/index.php");
 		WebElement getSearchBar = driver.findElement(By.id("search_query_top"));
+		WebDriverWait wait = new WebDriverWait(driver, 20);
 		getSearchBar.sendKeys("dress");
 		getSearchBar.sendKeys(Keys.ENTER);
 
@@ -54,22 +57,25 @@ public class ShoppingTester {
 			if (dress.getText().toLowerCase().contains("dress")) {
 				driver.navigate().to(dress.getAttribute("href"));
 
-				// System.out.println(dress.getText());
-				// System.out.println(dress.getAttribute("href").toString());
 				WebElement buyDress = driver.findElement(By.xpath("//*[@id=\"add_to_cart\"]/button/span"));
 				buyDress.click();
-				TimeUnit.SECONDS.sleep(3);
+				wait.until(ExpectedConditions
+						.visibilityOfElementLocated(By.xpath("//*[@id=\"layer_cart\"]/div[1]/div[2]/div[4]/a")));
+
 				WebElement buyDress2 = driver.findElement(By.xpath("//*[@id=\"layer_cart\"]/div[1]/div[2]/div[4]/a"));
 				buyDress2.click();
-				TimeUnit.SECONDS.sleep(3);
+				wait.until(ExpectedConditions
+						.visibilityOfElementLocated(By.xpath("//*[@id=\"center_column\"]/p[2]/a[1]")));
+
 				WebElement buyDress3 = driver.findElement(By.xpath("//*[@id=\"center_column\"]/p[2]/a[1]"));
 				buyDress3.click();
-				TimeUnit.SECONDS.sleep(3);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email_create")));
+
 				WebElement addEmail = driver.findElement(By.id("email_create"));
 				int n = ((int) (Math.random() * 100000) + 1);
 				addEmail.sendKeys("email" + n + "@gmail.com");
 				addEmail.sendKeys(Keys.ENTER);
-				TimeUnit.SECONDS.sleep(4);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("customer_firstname")));
 
 				WebElement addName1 = driver.findElement(By.id("customer_firstname"));
 				addName1.sendKeys("FirstName");
@@ -95,27 +101,30 @@ public class ShoppingTester {
 				addName9.sendKeys("newAddress");
 				WebElement register = driver.findElement(By.id("submitAccount"));
 				register.click();
-				TimeUnit.SECONDS.sleep(2);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("processAddress")));
+
 				WebElement registerAddress = driver.findElement(By.name("processAddress"));
 				registerAddress.click();
-				TimeUnit.SECONDS.sleep(2);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("processCarrier")));
 				WebElement addName60 = driver.findElement(By.id("cgv"));
 				addName60.click();
 				WebElement register2 = driver.findElement(By.name("processCarrier"));
 				register2.click();
-				TimeUnit.SECONDS.sleep(5);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("bankwire")));
+
 				WebElement buyBankWire = driver.findElement(By.className("bankwire"));
 				buyBankWire.click();
-				TimeUnit.SECONDS.sleep(5);
+
+				wait.until(
+						ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"cart_navigation\"]/button")));
 				WebElement buyBankWireFinal = driver.findElement(By.xpath("//*[@id=\"cart_navigation\"]/button"));
 				buyBankWireFinal.click();
-				TimeUnit.SECONDS.sleep(50);
 				WebElement confirm = driver.findElement(By.className("cheque-indent"));
-
-				if (confirm.getText().toLowerCase().matches(".*Your order on My Store is complete.*")) {
+				if (confirm.getText().toLowerCase().matches("your order on my store is complete.")) {
 					assertTrue(true);
 					break;
 				}
+				TimeUnit.SECONDS.sleep(5);
 			}
 		}
 	}
