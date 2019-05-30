@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -16,7 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class ShoppingTester {
+public class ShoppingTest {
 	public static WebDriver driver;
 
 	@BeforeClass
@@ -25,7 +24,6 @@ public class ShoppingTester {
 		driver = new ChromeDriver();
 	}
 
-	@Ignore
 	@Test
 	public void methodTest() throws InterruptedException {
 		driver.manage().window().maximize();
